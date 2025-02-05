@@ -7,6 +7,9 @@ import 'package:flutter_login/login/login.dart';
 import 'package:flutter_login/splash/splash.dart';
 import 'package:user_repository/user_repository.dart';
 
+/*
+  앱 전체 상태관리 루트 위젯
+ */
 class App extends StatefulWidget {
   const App({super.key});
 
@@ -15,6 +18,9 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  /*
+    앱 시작 시 아래 두 라인을 초기화
+   */
   late final AuthenticationRepository _authenticationRepository;
   late final UserRepository _userRepository;
 
@@ -27,17 +33,24 @@ class _AppState extends State<App> {
 
   @override
   void dispose() {
+    /*
+      앱 종료 시 AuthentificationRepository의 자원을 해제
+     */
     _authenticationRepository.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("KEG app.dart build ");
     return RepositoryProvider.value(
-      value: _authenticationRepository,
-      child: BlocProvider(
-        lazy: false,
-        create: (_) => AuthenticationBloc(
+      value: _authenticationRepository, // 하위 위젯들이 접근 할 수 있도록 초기화
+      /*
+        하위 위젯들이 _authenticationRepository에 접근 할 수 있도록 설정.
+       */
+      child: BlocProvider( //
+        lazy: false,  // 생성 시 바로 Bloc를 생성
+        create: (_) => AuthenticationBloc(  // AuthentificationBloc 생성 후 AuthentificationSubscriptionRequested 이벤트를 추가
           authenticationRepository: _authenticationRepository,
           userRepository: _userRepository,
         )..add(AuthenticationSubscriptionRequested()),
@@ -47,6 +60,9 @@ class _AppState extends State<App> {
   }
 }
 
+/*
+  navigationKey를 가지고 네비게이션을 직접 제어한다.
+ */
 class AppView extends StatefulWidget {
   const AppView({super.key});
 
@@ -55,29 +71,39 @@ class AppView extends StatefulWidget {
 }
 
 class _AppViewState extends State<AppView> {
+  /*
+    _navigatorKey를 생성하여 MaterialApp에 navigationKey를 전달.
+   */
   final _navigatorKey = GlobalKey<NavigatorState>();
 
+  // _navigator getter를 통해 Navigator 상태에 쉽게 접근.
   NavigatorState get _navigator => _navigatorKey.currentState!;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      navigatorKey: _navigatorKey,
-      builder: (context, child) {
+      navigatorKey: _navigatorKey,  // 네비게이션 제어 키 할당
+      builder: (context, child) { // 앱 전체에 BlocListener 적용.
         return BlocListener<AuthenticationBloc, AuthenticationState>(
+          /*
+            상태 변화가 발생하면 listener가 실행.
+            _navigator.pushAndRemoveUntil<void>
+            새로운 페이지 전환 시 이전 페이지 모두 제거(스택 초기화)
+
+           */
           listener: (context, state) {
             switch (state.status) {
-              case AuthenticationStatus.authenticated:
+              case AuthenticationStatus.authenticated: // 인증 성공-> HomePage로
                 _navigator.pushAndRemoveUntil<void>(
                   HomePage.route(),
                   (route) => false,
                 );
-              case AuthenticationStatus.unauthenticated:
+              case AuthenticationStatus.unauthenticated: // 인증 실패-> LoginPage
                 _navigator.pushAndRemoveUntil<void>(
                   LoginPage.route(),
                   (route) => false,
                 );
-              case AuthenticationStatus.unknown:
+              case AuthenticationStatus.unknown: // 별도 처리 없이 유지
                 break;
             }
           },

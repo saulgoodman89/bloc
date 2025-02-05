@@ -12,6 +12,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("KEG home_page build");
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(12),
