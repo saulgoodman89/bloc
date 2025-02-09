@@ -11,6 +11,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("KEG HomePage Widget Build");
     return const Scaffold(
       body: Center(
         child: Column(
@@ -24,7 +25,6 @@ class HomePage extends StatelessWidget {
 
 class _LogoutButton extends StatelessWidget {
   const _LogoutButton();
-
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(

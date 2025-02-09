@@ -8,8 +8,10 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("KEG LoginForm build");
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
+        print("KEG LoginForm listener");
         if (state.status.isFailure) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
@@ -58,6 +60,7 @@ class _UsernameInput extends StatelessWidget {
 class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("KEG password input");
     final displayError = context.select(
       (LoginBloc bloc) => bloc.state.password.displayError,
     );
@@ -65,6 +68,7 @@ class _PasswordInput extends StatelessWidget {
     return TextField(
       key: const Key('loginForm_passwordInput_textField'),
       onChanged: (password) {
+        print("KEG ohChanged TextField");
         context.read<LoginBloc>().add(LoginPasswordChanged(password));
       },
       obscureText: true,
@@ -79,6 +83,7 @@ class _PasswordInput extends StatelessWidget {
 class _LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("LogInButon build");
     final isInProgressOrSuccess = context.select(
       (LoginBloc bloc) => bloc.state.status.isInProgressOrSuccess,
     );
