@@ -46,7 +46,6 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
     print("_AppState build");
     return RepositoryProvider.value(  // RepositoryProvider.value : _authenticationRepository를 하위 위젯 트리에서 사용할 수 있도록 제공.
       value: _authenticationRepository,
@@ -58,23 +57,7 @@ class _AppState extends State<App> {
       child: BlocProvider( // AuthenticationBloc을 생성하고 하위 위젯 트리에서 사용 하도록 제공.
         lazy: false,
         create: (_) => AuthenticationBloc(
-=======
     print("KEG app.dart build ");
-    return RepositoryProvider.value(
-      value: _authenticationRepository, // 하위 위젯들이 접근 할 수 있도록 초기화
-      /*
-        하위 위젯들이 _authenticationRepository에 접근 할 수 있도록 설정.
-       */
-      child: BlocProvider( //
-        lazy: false,  // 생성 시 바로 Bloc를 생성
-        create: (_) => AuthenticationBloc(  // AuthentificationBloc 생성 후 AuthentificationSubscriptionRequested 이벤트를 추가
->>>>>>> 402702ffb5bc687c08804177b3f075c64ff8485a
-          authenticationRepository: _authenticationRepository,
-          userRepository: _userRepository,
-        )..add(AuthenticationSubscriptionRequested()),// 인증 상태 구독을 위한 이벤트 추가
-        child: const AppView(),
-      ),
-    );
   }
 }
 
@@ -100,7 +83,6 @@ class _AppViewState extends State<AppView> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-<<<<<<< HEAD
       navigatorKey: _navigatorKey,   // navigation 관리위한 globalKey
       builder: (context, child) {
         /*
@@ -108,10 +90,6 @@ class _AppViewState extends State<AppView> {
           상태가 변경 될 때 마다 listener zhfqordl tngod.
           ui를 업데이트 하지 않고 side effect를 처리.
          */
-=======
-      navigatorKey: _navigatorKey,  // 네비게이션 제어 키 할당
-      builder: (context, child) { // 앱 전체에 BlocListener 적용.
->>>>>>> 402702ffb5bc687c08804177b3f075c64ff8485a
         return BlocListener<AuthenticationBloc, AuthenticationState>(
           /*
             상태 변화가 발생하면 listener가 실행.
@@ -121,20 +99,12 @@ class _AppViewState extends State<AppView> {
            */
           listener: (context, state) {
             switch (state.status) {
-<<<<<<< HEAD
               case AuthenticationStatus.authenticated: //인증된 상태면 Homepage로  이동
-=======
-              case AuthenticationStatus.authenticated: // 인증 성공-> HomePage로
->>>>>>> 402702ffb5bc687c08804177b3f075c64ff8485a
                 _navigator.pushAndRemoveUntil<void>(
                   HomePage.route(),
                   (route) => false,
                 );
-<<<<<<< HEAD
               case AuthenticationStatus.unauthenticated:  // 인증되지 않은 상태면 LoginPage로 이동
-=======
-              case AuthenticationStatus.unauthenticated: // 인증 실패-> LoginPage
->>>>>>> 402702ffb5bc687c08804177b3f075c64ff8485a
                 _navigator.pushAndRemoveUntil<void>(
                   LoginPage.route(),
                   (route) => false,
