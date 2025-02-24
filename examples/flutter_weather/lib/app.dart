@@ -13,6 +13,9 @@ class WeatherApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /*
+      BlocProvider로 종속성 주입.
+     */
     return BlocProvider(
       create: (_) => WeatherCubit(_weatherRepository),
       child: const WeatherAppView(),
@@ -42,6 +45,10 @@ class WeatherAppView extends StatelessWidget {
   }
 }
 
+/*
+  기존 정의된 Weather 클래스에 변경 없이 추가 기능 제공
+  기존 클래스를 상속하거나 수정하지 않고도 해당 클래스에 필요한 추가 기능을 간단하게 확장 가능.
+ */
 extension on Weather {
   Color get toColor {
     switch (condition) {

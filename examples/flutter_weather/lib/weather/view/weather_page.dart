@@ -24,6 +24,10 @@ class WeatherPage extends StatelessWidget {
       body: Center(
         child: BlocBuilder<WeatherCubit, WeatherState>(
           builder: (context, state) {
+            /*
+              status에 따라 다른 initial 상태이면 WeatherEmpty 화면으로
+              loading이면 WeatherLoading 화면으로 이동
+             */
             return switch (state.status) {
               WeatherStatus.initial => const WeatherEmpty(),
               WeatherStatus.loading => const WeatherLoading(),
@@ -42,6 +46,9 @@ class WeatherPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.search, semanticLabel: 'Search'),
         onPressed: () async {
+          /*
+            SearchPage로 이동 , 선택된 도시정보를 반환받아 city 변수에 저장.
+           */
           final city = await Navigator.of(context).push(SearchPage.route());
           if (!context.mounted) return;
           await context.read<WeatherCubit>().fetchWeather(city);

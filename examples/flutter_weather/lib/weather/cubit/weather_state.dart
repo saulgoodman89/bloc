@@ -24,6 +24,10 @@ final class WeatherState extends Equatable {
   final Weather weather;
   final TemperatureUnits temperatureUnits;
 
+  /*
+    copyWith Method는 , WeatherState의 복사본을 생성하되
+    필요한 경우 특정 속성(status , temperatesUnits , weather)의 값을 변경하여 새로운 WeatherState 객체를 반환
+   */
   WeatherState copyWith({
     WeatherStatus? status,
     TemperatureUnits? temperatureUnits,

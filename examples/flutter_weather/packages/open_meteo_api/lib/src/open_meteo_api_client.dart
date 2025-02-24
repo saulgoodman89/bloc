@@ -37,6 +37,11 @@ class OpenMeteoApiClient {
       {'name': query, 'count': '1'},
     );
 
+    /*
+        KEGLSA0127 locationResponse : {"results":[{"id":1835848,"name":"Seoul","latitude":37.566,"longitude":126.9784,
+        "elevation":38.0,"feature_code":"PPLC","country_code":"KR","admin1_id":1835847,"timezone":"Asia/Seoul",
+        "population":10349312,"country_id":1835841,"country":"South Korea","admin1":"Seoul"}],"generationtime_ms":1.0460615}
+     */
     final locationResponse = await _httpClient.get(locationRequest);
 
     if (locationResponse.statusCode != 200) {

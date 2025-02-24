@@ -16,6 +16,9 @@ class WeatherCubit extends HydratedCubit<WeatherState> {
   Future<void> fetchWeather(String? city) async {
     if (city == null || city.isEmpty) return;
 
+    /*
+        WeatherStatus를 loading 으로 Cubit에 전달.
+     */
     emit(state.copyWith(status: WeatherStatus.loading));
 
     try {
@@ -23,10 +26,19 @@ class WeatherCubit extends HydratedCubit<WeatherState> {
         await _weatherRepository.getWeather(city),
       );
       final units = state.temperatureUnits;
+      // 화씨 여부를 체크하여 화씨로 나타낼지 , 섭시로 나타낼지 선택.
       final value = units.isFahrenheit
           ? weather.temperature.value.toFahrenheit()
           : weather.temperature.value;
 
+      /*
+          emit : bloc , cubit의 상태를 업데이트
+          새로운 상태 객체를 emit 하여 UI를 다시 빌드하도록 한다.
+
+          state.copyWith : 현재 상태를 복사하여 새로운 상태 객체를 생성.
+          불변성을 유지하며 특정 속성만 변경된 새로운 상태 객체를 생성하는데 사용.
+
+       */
       emit(
         state.copyWith(
           status: WeatherStatus.success,
@@ -35,6 +47,9 @@ class WeatherCubit extends HydratedCubit<WeatherState> {
         ),
       );
     } on Exception {
+      /*
+        Exception 발생 시 , 날씨 데이터 가져오는데 실패했음을 알린다.
+       */
       emit(state.copyWith(status: WeatherStatus.failure));
     }
   }
