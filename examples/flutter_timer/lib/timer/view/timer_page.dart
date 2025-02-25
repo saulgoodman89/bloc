@@ -64,13 +64,20 @@ class Actions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TimerBloc, TimerState>(
-      buildWhen: (prev, state) => prev.runtimeType != state.runtimeType,
+    return BlocBuilder<TimerBloc, TimerState>( //BlocBuilder는 Bloc의 상태 변화를 감지하고 상태 변경 때 마다 builder 함수를 호출해 UI를 다시 빌드.
+      buildWhen: (prev, state) => prev.runtimeType != state.runtimeType, //state의 type이 변경 되었을 때만 UI를 다시 빌드
       builder: (context, state) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ...switch (state) {
+            /*
+                state가 TimerInitial 일 때 버튼을 누르면
+                1.TimerStarted 이벤트가 발생
+                2.타이머 실행 유무를 체크 후 없다면 ticker 스트림을 구독해 타이머를 시작.
+                3.tick 마다 TimerTicked 이벤트를 TimerBloc에 추가
+                4.TimerBloc은 TimerTicker 이벤트를 처리해 UI를 업데이트
+             */
               TimerInitial() => [
                   FloatingActionButton(
                     child: const Icon(Icons.play_arrow),
@@ -79,6 +86,11 @@ class Actions extends StatelessWidget {
                         .add(TimerStarted(duration: state.duration)),
                   ),
                 ],
+            /*
+                TimerRunInProgress 상태 일 때 pause , reset 버튼이 생긴다.
+                TimerPaused 이벤트 발생 일 때 pause 버튼을 누르면 TimerPaused 이벤트를 Bloc에 추가
+                reset 버튼을 누르면 TimerReset 이벤트를 Bloc에 추가
+             */
               TimerRunInProgress() => [
                   FloatingActionButton(
                     child: const Icon(Icons.pause),

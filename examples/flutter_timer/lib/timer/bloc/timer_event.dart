@@ -4,6 +4,9 @@ sealed class TimerEvent {
   const TimerEvent();
 }
 
+/*
+    확실히 변경되지 않은 값들을 다루므로 클래스를 final로 선언하여 상속으로 인한 변경을 방지.
+ */
 final class TimerStarted extends TimerEvent {
   const TimerStarted({required this.duration});
   final int duration;
