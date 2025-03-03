@@ -31,9 +31,13 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
 
   void _onStarted(TimerStarted event, Emitter<TimerState> emit) {
     emit(TimerRunInProgress(event.duration));
-    _tickerSubscription?.cancel();
+    _tickerSubscription?.cancel(); // _tickerSubscription이 널이면 아무것도 하지 않고 널이 아니면 cancle 메서드를 호출.
+    /*
+      ticker 스트림을 구독하여 event_duration 동안  타이머 시작.
+     */
     _tickerSubscription = _ticker
-        .tick(ticks: event.duration)
+        .tick(ticks: event.duration)  // 60번 tick 횟수 지정.
+      // tick 때 마다 TimerTicked 이벤트를 추가, duration이 남아있으면 TimerInProgress 상태를 방출 , 시간이 끝났으면 TimerRunComplete 상태를 방출
         .listen((duration) => add(_TimerTicked(duration: duration)));
   }
 

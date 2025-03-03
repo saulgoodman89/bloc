@@ -9,6 +9,9 @@ class WeatherRepository {
 
   final OpenMeteoApiClient _weatherApiClient;
 
+  /*
+
+   */
   Future<Weather> getWeather(String city) async {
     final location = await _weatherApiClient.locationSearch(city);
     final weather = await _weatherApiClient.getWeather(
