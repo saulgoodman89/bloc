@@ -14,6 +14,10 @@ part 'post_state.dart';
 const _postLimit = 20;
 const throttleDuration = Duration(milliseconds: 100);
 
+
+/*
+    이벤트 스트림을 조작하여 특정 시간 간격동안 발생하는 이벤트를 처리하는데 사용.
+ */
 EventTransformer<E> throttleDroppable<E>(Duration duration) {
   return (events, mapper) {
     return droppable<E>().call(events.throttle(duration), mapper);
@@ -24,6 +28,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   PostBloc({required this.httpClient}) : super(const PostState()) {
     on<PostFetched>(
       _onFetched,
+      // throttleDroppable 트랜스포머를 이용하여 , 이벤트 스트림을 스로틀링 한다. PostFetched 이벤트 중 마지막 이벤트만 _onFetched 함수에 전달
       transformer: throttleDroppable(throttleDuration),
     );
   }

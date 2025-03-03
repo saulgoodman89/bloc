@@ -10,6 +10,7 @@ class PostsList extends StatefulWidget {
 }
 
 class _PostsListState extends State<PostsList> {
+  //ScrollController : 스크롤 위치를 제어하고 스크롤 이벤트 감지.
   final _scrollController = ScrollController();
 
   @override
