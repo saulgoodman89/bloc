@@ -7,6 +7,9 @@ sealed class ProfileWizardEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+/*
+  이름을 입력받는 이벤트
+ */
 final class ProfileWizardNameSubmitted extends ProfileWizardEvent {
   const ProfileWizardNameSubmitted(this.name);
 
@@ -16,6 +19,9 @@ final class ProfileWizardNameSubmitted extends ProfileWizardEvent {
   List<Object> get props => [name];
 }
 
+/*
+  이름을 입력받는 이벤트
+ */
 final class ProfileWizardAgeSubmitted extends ProfileWizardEvent {
   const ProfileWizardAgeSubmitted(this.age);
 
